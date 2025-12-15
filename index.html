@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise Reveal!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #2c3e50;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        h1 {
+            color: white;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* The container keeps the image and canvas perfectly aligned */
+        .scratch-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            border: 5px solid #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            user-select: none; /* Prevents highlighting text while scratching */
+        }
+
+        /* The Surprise Image (Bottom Layer) */
+        .scratch-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            z-index: 1;
+        }
+
+        /* The Scratch Surface (Top Layer) */
+        .scratch-container canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            z-index: 2;
+            cursor: crosshair;
+            touch-action: none; /* Important for mobile touch handling */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Scratch to Reveal!</h1>
+
+    <div class="scratch-container">
+        <img src="assets/surprise.jpg" alt="Surprise Image" id="surprise-img">
+        <canvas id="scratch-card"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('scratch-card');
+        const context = canvas.getContext('2d');
+        const container = document.querySelector('.scratch-container');
+
+        // Set canvas size to match the container
+        canvas.width = container.offsetWidth;
+        canvas.height = container.offsetHeight;
+
+        // Initialize the scratch cover
+        const init = () => {
+            // 1. Create a gradient for the cover (Silver/Gold look)
+            const gradient = context.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, '#999');
+            gradient.addColorStop(0.5, '#ddd');
+            gradient.addColorStop(1, '#999');
+
+            context.fillStyle = gradient;
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 2. Add "Scratch Me" text
+            context.fillStyle = '#444';
+            context.font = 'bold 24px Arial';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            context.fillText('SCRATCH ME!', canvas.width / 2, canvas.height / 2);
+        };
+
+        // Call init to draw the cover
+        init();
+
+        // Variables to track drawing state
+        let isDrawing = false;
+
+        // The Scratch Function
+        const scratch = (x, y) => {
+            // This is the magic line: makes the brush erase content instead of painting
+            context.globalCompositeOperation = 'destination-out';
+            
+            context.beginPath();
+            // The 30 is the brush size
+            context.arc(x, y, 30, 0, 2 * Math.PI); 
+            context.fill();
+        };
+
+        // Event Handlers
+        const getMousePos = (e) => {
+            const rect = canvas.getBoundingClientRect();
+            return {
+                x: (e.clientX || e.touches[0].clientX) - rect.left,
+                y: (e.clientY || e.touches[0].clientY) - rect.top
+            };
+        };
+
+        const startScratch = (e) => {
+            isDrawing = true;
+            const pos = getMousePos(e);
+            scratch(pos.x, pos.y);
+        };
+
+        const endScratch = () => {
+            isDrawing = false;
+        };
+
+        const moveScratch = (e) => {
+            if (!isDrawing) return;
+            e.preventDefault(); // Prevent scrolling on mobile
+            const pos = getMousePos(e);
+            scratch(pos.x, pos.y);
+        };
+
+        // Mouse Events (Desktop)
+        canvas.addEventListener('mousedown', startScratch);
+        canvas.addEventListener('mouseup', endScratch);
+        canvas.addEventListener('mouseleave', endScratch);
+        canvas.addEventListener('mousemove', moveScratch);
+
+        // Touch Events (Mobile)
+        canvas.addEventListener('touchstart', startScratch);
+        canvas.addEventListener('touchend', endScratch);
+        canvas.addEventListener('touchmove', moveScratch);
+
+    </script>
+</body>
+</html>
+
