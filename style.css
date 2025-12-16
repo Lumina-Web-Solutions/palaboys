@@ -159,4 +159,63 @@ body {
     color: #333;
     opacity: 0.6;
 }
+/* --- PRINT BUTTON STYLING --- */
+.id-card-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.print-btn {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    transition: background 0.3s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+.print-btn:hover {
+    background-color: #555;
+}
+
+/* --- PRINT MODE CONFIGURATION --- */
+@media print {
+    /* 1. Hide everything initially */
+    body * {
+        visibility: hidden;
+    }
+
+    /* 2. Unhide only the ID card and its children */
+    #printableArea, #printableArea * {
+        visibility: visible;
+    }
+
+    /* 3. Position the card in the center of the paper */
+    #printableArea {
+        position: absolute;
+        left: 50%;
+        top: 50px;
+        transform: translateX(-50%);
+        border: 1px solid #ccc; /* Optional border for cutting guide */
+        box-shadow: none; /* Remove shadow for cleaner print */
+    }
+
+    /* 4. Ensure background colors/gradients print */
+    body {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        background-color: white; /* Save ink, remove grey background */
+    }
+
+    /* 5. Hide the print button */
+    .print-btn {
+        display: none;
+    }
+}
 
