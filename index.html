@@ -9,43 +9,52 @@
 </head>
 <body>
 
-    <div class="id-card-container">
-        <div class="hole-punch"></div>
+    <div class="id-card-wrapper">
+        <div class="id-card-container" id="printableArea">
+            <div class="hole-punch"></div>
 
-        <div class="id-header">
-            <img src="assets/logo.png" alt="Logo" class="company-logo">
-            <h2 class="company-name">Pala Boys</h2>
-        </div>
-
-        <div class="id-body">
-            <div class="photo-frame">
-                <img src="assets/abyt.webp" alt="Aby T Joseph" class="user-photo">
+            <div class="id-header">
+                <img src="assets/logo.png" alt="Pala Boys Logo" class="company-logo">
+                <h2 class="company-name">Pala Boys</h2>
             </div>
 
-            <h1 class="user-name">Aby T Joseph</h1>
-            <p class="user-role">Member</p> <div class="divider"></div>
+            <div class="id-body">
+                <div class="photo-frame">
+                    <img src="assets/abyt.webp" alt="Aby T Joseph" class="user-photo">
+                </div>
 
-            <div class="details">
-                <div class="detail-item">
-                    <span class="label">ID No:</span>
-                    <span class="value">PB-2025-01</span>
+                <h1 class="user-name">Aby T Joseph</h1>
+                <p class="user-role">Member</p>
+
+                <div class="divider"></div>
+
+                <div class="details">
+                    <div class="detail-item">
+                        <span class="label">ID No:</span>
+                        <span class="value">PB-2025-01</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Location:</span>
+                        <span class="value">Kuravilangad</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Phone:</span>
+                        <span class="value">+91 90748 78171</span>
+                    </div>
                 </div>
-                <div class="detail-item">
-                    <span class="label">Location:</span>
-                    <span class="value">Kuravilangad</span>
-                </div>
-                <div class="detail-item">
-                    <span class="label">Phone:</span>
-                    <span class="value">+91 90748 78171</span>
-                </div>
+            </div>
+
+            <div class="id-footer">
+                <div class="barcode">|| ||| || ||||| || ||</div>
             </div>
         </div>
 
-        <div class="id-footer">
-            <div class="barcode">|| ||| || ||||| || ||</div>
-        </div>
+        <button onclick="window.print()" class="print-btn">
+            Download / Print ID Card
+        </button>
     </div>
 
 </body>
+
 </html>
 
